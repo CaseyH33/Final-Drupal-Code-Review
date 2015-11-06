@@ -1,0 +1,5 @@
+name = DNA
+description = Outputs the other half of a DNA helix
+package = Epicodus
+core = 7.x
+files[] = dna.module

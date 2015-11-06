@@ -37,7 +37,7 @@
     $input_dna = str_replace(' ', '', $input_dna);
     $input_dna_array = str_split($input_dna);
     $dna_letters = ["A", "T", "C", "G"];
-    foreach($input_dna as $letter) {
+    foreach($input_dna_array as $letter) {
       if(!(in_array($letter, $dna_letters)) {
         form_error($element, t("Please enter only nucleotides A, T, C, and G"));
       }
@@ -45,34 +45,33 @@
   }
 
   function dna_form_submit($form, &$form_state) {
-    //Gets the values from the form
-    $user_input_dna = strtoupper($form_state['values']['dna']);
-    $user_input_dna = str_replace(' ', '', $user_input_dna);
+    $user_input_dna = $form_state['values']['dna_input'];
+    $user_input_dna = strtoupper(str_replace(' ', '', $user_input_dna));
     $user_input_dna_array = str_split($user_input_dna);
 
     $input_helix = "";
     $output_helix = "";
 
-    foreach($user_input_dna_array as $letter) {
-      if($letter == "A") {
+    foreach($user_input_dna_array as $dna_letter) {
+      if($dna_letter === "A") {
         $output_helix .= "T ";
-      } elseif($letter == "T") {
+      } elseif($dna_letter === "T") {
         $output_helix .= "A ";
-      } elseif($letter == "C") {
+      } elseif($dna_letter === "C") {
         $output_helix .= "G ";
       } else {
         $output_helix .= "C ";
       }
-      $input_helix .= $letter + " ";
+      $input_helix .= $dna_letter + " ";
     }
-    $_SESSION['output_dna'] = trim($output_helix);
-    $_SESSION['input_dna'] = trim($input_helix);
+
+    $_SESSION['input_dna'] = $input_helix;
+    $_SESSION['output_dna'] = $output_helix;
     $form_state['redirect'] = 'dna_success';
   }
 
   function dna_result() {
     $input_dna_string = $_SESSION['input_dna'];
     $output_dna_string = $_SESSION['output_dna'];
-    return "<p>The helix you inputted: $input_dna_string</p>
-    <p>The other helix to match: $output_dna_string</p>";
+    return "<p>The helix you inputted: $input_dna_string</p><p>The other helix to match: $output_dna_string</p>";
   }

@@ -1,5 +1,5 @@
 name = DNA
 description = Outputs the other half of a DNA helix
-package = Epicodus
+package = Epicodus Examples
 core = 7.x
 files[] = dna.module

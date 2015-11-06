@@ -1,0 +1,5 @@
+name = My Ajax Article Viewer
+description = Display Article Nodes with Ajax.
+package = Epicodus Examples
+core = 7.x
+files[] = article_viewer.module

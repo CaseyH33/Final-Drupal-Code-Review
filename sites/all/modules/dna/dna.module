@@ -1,0 +1,78 @@
+<?php
+
+  function dna_menu() {
+    $items['dna'] = array(
+      'title' => 'DNA',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('dna_form'),
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+    );
+    $items['dna_success'] = array(
+      'title' => 'DNA Helix',
+      'page callback' => 'dna_result',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+    return $items;
+  }
+
+  function dna_form() {
+    $form['dna_input'] = array(
+        '#title' => 'One half of DNA helix',
+        '#type' => 'textfield',
+        '#description' => t('Enter one half of the DNA helix'),
+        '#element_validate' => array('dna_validate_letters'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Submit',
+    );
+    return $form;
+  }
+
+  function dna_validate_letters($element) {
+    $input_dna = strtoupper($element['#value']);
+    $input_dna = str_replace(' ', '', $input_dna);
+    $input_dna_array = str_split($input_dna);
+    $dna_letters = ["A", "T", "C", "G"];
+    foreach($input_dna as $letter) {
+      if(!(in_array($letter, $dna_letters)) {
+        form_error($element, t("Please enter only nucleotides A, T, C, and G"));
+      }
+    }
+  }
+
+  function dna_form_submit($form, &$form_state) {
+    //Gets the values from the form
+    $user_input_dna = strtoupper($form_state['values']['dna']);
+    $user_input_dna = str_replace(' ', '', $user_input_dna);
+    $user_input_dna_array = str_split($user_input_dna);
+
+    $input_helix = "";
+    $output_helix = "";
+
+    foreach($user_input_dna_array as $letter) {
+      if($letter == "A") {
+        $output_helix .= "T ";
+      } elseif($letter == "T") {
+        $output_helix .= "A ";
+      } elseif($letter == "C") {
+        $output_helix .= "G ";
+      } else {
+        $output_helix .= "C ";
+      }
+      $input_helix .= $letter + " ";
+    }
+    $_SESSION['output_dna'] = trim($output_helix);
+    $_SESSION['input_dna'] = trim($input_helix);
+    $form_state['redirect'] = 'dna_success';
+  }
+
+  function dna_result() {
+    $input_dna_string = $_SESSION['input_dna'];
+    $output_dna_string = $_SESSION['output_dna'];
+    return "<p>The helix you inputted: $input_dna_string</p>
+    <p>The other helix to match: $output_dna_string</p>";
+  }

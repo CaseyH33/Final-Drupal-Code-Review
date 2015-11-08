@@ -22,7 +22,7 @@
         '#title' => 'One half of DNA helix',
         '#type' => 'textfield',
         '#description' => t('Enter one half of the DNA helix'),
-        '#element_validate' => array('dna_validate_letters'),
+        '#element_validate' => array('element_validate_dna'),
         '#required' => TRUE,
     );
     $form['submit'] = array(
@@ -32,13 +32,14 @@
     return $form;
   }
 
-  function dna_validate_letters($element) {
-    $input_dna = strtoupper($element['#value']);
-    $input_dna = str_replace(' ', '', $input_dna);
+  function element_validate_dna($element) {
+    $input_dna = $element['#value'];
+    $input_dna = strtoupper(str_replace(' ', '', $input_dna));
     $input_dna_array = str_split($input_dna);
-    $dna_letters = ["A", "T", "C", "G"];
+    $dna_letters = array("A", "T", "C", "G");
+
     foreach($input_dna_array as $letter) {
-      if(!(in_array($letter, $dna_letters)) {
+      if(!(in_array($letter, $dna_letters))) {
         form_error($element, t("Please enter only nucleotides A, T, C, and G"));
       }
     }
@@ -49,24 +50,22 @@
     $user_input_dna = strtoupper(str_replace(' ', '', $user_input_dna));
     $user_input_dna_array = str_split($user_input_dna);
 
-    $input_helix = "";
-    $output_helix = "";
+    $output_helix = [];
 
     foreach($user_input_dna_array as $dna_letter) {
       if($dna_letter === "A") {
-        $output_helix .= "T ";
+        array_push($output_helix, "T");
       } elseif($dna_letter === "T") {
-        $output_helix .= "A ";
+        array_push($output_helix, "A");
       } elseif($dna_letter === "C") {
-        $output_helix .= "G ";
+        array_push($output_helix, "G");
       } else {
-        $output_helix .= "C ";
+        array_push($output_helix, "C");
       }
-      $input_helix .= $dna_letter + " ";
     }
 
-    $_SESSION['input_dna'] = $input_helix;
-    $_SESSION['output_dna'] = $output_helix;
+    $_SESSION['input_dna'] = implode(" ", $user_input_dna_array);
+    $_SESSION['output_dna'] = implode(" ", $output_helix);
     $form_state['redirect'] = 'dna_success';
   }
 

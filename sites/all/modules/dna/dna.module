@@ -49,10 +49,17 @@
     $user_input_dna = $form_state['values']['dna_input'];
     $user_input_dna = strtoupper(str_replace(' ', '', $user_input_dna));
     $user_input_dna_array = str_split($user_input_dna);
+    $output_dna = dna_helix($user_input_dna_array);
 
+    $_SESSION['input_dna'] = implode(" ", $user_input_dna_array);
+    $_SESSION['output_dna'] = $output_dna;
+    $form_state['redirect'] = 'dna_success';
+  }
+
+  function dna_helix($input_array) {
     $output_helix = [];
 
-    foreach($user_input_dna_array as $dna_letter) {
+    foreach($input_array as $dna_letter) {
       if($dna_letter === "A") {
         array_push($output_helix, "T");
       } elseif($dna_letter === "T") {
@@ -64,9 +71,7 @@
       }
     }
 
-    $_SESSION['input_dna'] = implode(" ", $user_input_dna_array);
-    $_SESSION['output_dna'] = implode(" ", $output_helix);
-    $form_state['redirect'] = 'dna_success';
+    return implode(" ", $output_helix);
   }
 
   function dna_result() {

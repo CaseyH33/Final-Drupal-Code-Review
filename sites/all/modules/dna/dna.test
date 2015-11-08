@@ -1,0 +1,23 @@
+<?php
+class DNATestCase extends DrupalUnitTestCase
+{
+
+  public static function getInfo()
+  {
+    return array(
+      'name' => 'DNA Case Tests',
+      'description' => 'Test that my DNA module works properly.',
+      'group' => 'Epicodus Examples Tests',
+    );
+  }
+
+  function testDNA()
+  {
+    $description = 'Inputted nucleotide A returns nucleotide T';
+    $input = ['A'];
+    $result = dna_helix($input);
+    $expected_output = "T";
+    $this->assertEqual($result, $expected_output, $description);
+  }
+
+}

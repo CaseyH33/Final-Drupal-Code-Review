@@ -43,5 +43,25 @@ class DNATestCase extends DrupalUnitTestCase
     $expected_output = "T G A C";
     $this->assertEqual($result, $expected_output, $description);
   }
+}
 
+class DNATests extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'DNA Helix Display Tests',
+      'description' => 'Tests that DNA helix displays properly',
+      'group' => 'Epicodus Examples Tests',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('dna'));
+  }
+
+  public function testDisplay() {
+    $info['dna_input'] = "a Gt C";
+    $this->drupalPost('dna', $info, t("Submit"));
+    $this->assertText("T C A G", "Success!");
+  }
 }

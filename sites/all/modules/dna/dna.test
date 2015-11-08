@@ -36,6 +36,12 @@ class DNATestCase extends DrupalUnitTestCase
     $result = dna_helix($input);
     $expected_output = "G";
     $this->assertEqual($result, $expected_output, $description);
+
+    $description = 'Inputted helix ACTG returns helix TGAC';
+    $input = ['A', 'C', 'T', 'G'];
+    $result = dna_helix($input);
+    $expected_output = "T G A C";
+    $this->assertEqual($result, $expected_output, $description);
   }
 
 }

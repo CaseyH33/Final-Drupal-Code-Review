@@ -1,4 +1,6 @@
 <?php
+
+//Unit testing
 class DNATestCase extends DrupalUnitTestCase
 {
 
@@ -45,6 +47,7 @@ class DNATestCase extends DrupalUnitTestCase
   }
 }
 
+//Functional testing
 class DNATests extends DrupalWebTestCase {
 
   public static function getInfo() {

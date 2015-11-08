@@ -33,11 +33,12 @@
   }
 
   function element_validate_dna($element) {
+    //Takes user inputted string and turns it into an array of upper case letters
     $input_dna = $element['#value'];
     $input_dna = strtoupper(str_replace(' ', '', $input_dna));
     $input_dna_array = str_split($input_dna);
     $dna_letters = array("A", "T", "C", "G");
-
+    //Compares each inputted letter to the dna letters and returns an error if any inputted letter is not A T C or G
     foreach($input_dna_array as $letter) {
       if(!(in_array($letter, $dna_letters))) {
         form_error($element, t("Please enter only nucleotides A, T, C, and G"));
@@ -46,9 +47,11 @@
   }
 
   function dna_form_submit($form, &$form_state) {
+    //Takes user inputted string and turns it into an array of upper case letters
     $user_input_dna = $form_state['values']['dna_input'];
     $user_input_dna = strtoupper(str_replace(' ', '', $user_input_dna));
     $user_input_dna_array = str_split($user_input_dna);
+    //Sends user inputted array to dna_helix function
     $output_dna = dna_helix($user_input_dna_array);
 
     $_SESSION['input_dna'] = implode(" ", $user_input_dna_array);
@@ -58,7 +61,7 @@
 
   function dna_helix($input_array) {
     $output_helix = [];
-
+    //Checks each letter in the input array and push its corresponding nucleotide to an output array
     foreach($input_array as $dna_letter) {
       if($dna_letter === "A") {
         array_push($output_helix, "T");
@@ -70,7 +73,7 @@
         array_push($output_helix, "C");
       }
     }
-
+    //Returns the output helix as a string with a space between each letter
     return implode(" ", $output_helix);
   }
 
